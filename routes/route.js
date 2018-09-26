@@ -58,14 +58,14 @@ router.post('/register', (req, res, next) => {
 				err.status = 400;
 				return next(err); }
 
-			// create object with form input
+			// create object
       		const userData = {
         		username: req.body.username,
         		email: req.body.email,
         		password: req.body.password
       		};
 
-			// use schema's `create` method to insert document into Mongo
+			// insert into mongo
       		User.create(userData, (error, user) => {
         	if (error) {
          		 return next(error);
@@ -104,7 +104,7 @@ router.post('/user', (req, res, next) => {
         		body: req.body.post
       		};
 
-			// use schema's `create` method to insert document into Mongo
+			// insert post
       		Posts.create(blogPost, (error, user) => {
         	if (error) {
          		 return next(error);
