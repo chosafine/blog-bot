@@ -1,0 +1,64 @@
+doctype html(lang='en')
+head
+  meta(charset='utf-8')
+  meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  meta(http-equiv='x-ua-compatible', content='ie=edge')
+  link(rel='stylesheet', href='/css/normalize.css')
+  link(rel='stylesheet', href='/css/style.css')
+  link(rel='stylesheet', href='https://web.archive.org/web/20121130181416cs_/http://fonts.staticsafe.ca/Fixedsys500c.css')
+  title Blog | #{title}
+  body
+    nav
+      a(href='/') Home
+      |
+      |
+      |
+      |
+      |
+      |
+      |
+      |
+      if !user
+        a(href='/login') login
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+        a(href='/register') register
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+      if user
+        a(href='/user') user page
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+        a(href='/logout') logout
+      |
+      |
+      |
+      |
+      |
+      |
+      |
+      |
+      a(href='/about') about
+    h1#headerTitle #{title}
+    block content
+    block foot
+      #footer
+        p 2018

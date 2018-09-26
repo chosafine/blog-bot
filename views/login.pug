@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  form(method='POST' action='/login')
+    label(for='email') Email:
+        input(type='email', placeholder='name@email.com' name='email')
+    |
+    |
+    |
+    |
+    label(for='pw') Password:
+        input(type='password' name='password')
+    |
+    |
+    |
+    |
+    button.btn.btn-primary(type='submit') Log In
