@@ -1,6 +1,14 @@
 extends layout
 
 block content
+	ul
+		each post in posts
+			h3 #{post.title}
+			|
+			|
+			p #{post.body}
+			|
+			|
 
 block foot
 	p your blog, 2018

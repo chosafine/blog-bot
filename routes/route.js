@@ -3,12 +3,22 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const User = require('../objects/User');
-const Posts = require('../objects/Posts');
+const User = require('../models/User');
+const Posts = require('../models/Post');
 
 // define routes
 router.get('/', (req, res, next) => {
-    res.render('index', { title: 'Blog', user: req.session.userId });
+    Posts.find({})
+      .sort({date: -1})
+      .exec( (error, posts) =>{
+        if ( error ) {
+          return next(error);
+        } else {
+            res.render('index', { 
+              title: 'Blog', user: req.session.userId, posts: posts
+            });
+        }
+      })
 });
 
 router.get('/logout', (req, res, next) => {
@@ -47,10 +57,9 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', (req, res, next) => {
-	if ( req.body.username &&
-		 req.body.email &&
-		 req.body.password &&
-		 req.body.confirmPassword )
+	if ( req.body.email &&
+		   req.body.password &&
+		   req.body.confirmPassword )
 		{
 			// confirm that passwords match
 			if ( req.body.password !== req.body.confirmPassword )
@@ -60,7 +69,6 @@ router.post('/register', (req, res, next) => {
 
 			// create object
       		const userData = {
-        		username: req.body.username,
         		email: req.body.email,
         		password: req.body.password
       		};
@@ -71,7 +79,7 @@ router.post('/register', (req, res, next) => {
          		 return next(error);
         	} else {
           		req.session.userId = user._id;
-              return res.redirect('/user');
+              return res.redirect('/post');
         	}
 			});
 
@@ -82,9 +90,9 @@ router.post('/register', (req, res, next) => {
 		}
 });
 
-router.get('/user', (req, res, next) => { 
+router.get('/post', (req, res, next) => { 
   if (req.session && req.session.userId) {
-    return res.render('user', { 
+    return res.render('post', { 
       title: 'New Post', name: User.username, user: req.session.userId 
     });
   } else {
@@ -94,7 +102,7 @@ router.get('/user', (req, res, next) => {
   }
 });
 
-router.post('/user', (req, res, next) => {
+router.post('/post', (req, res, next) => {
 	if ( req.body.title &&
 		 req.body.post )
 		{

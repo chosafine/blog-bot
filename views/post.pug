@@ -1,12 +1,8 @@
 extends layout
 
 block content
-  h1 Hello #{username}!
 
-  h1 New Post
-
-  // register form
-  form(method='POST' action='/user')
+  form(method='POST' action='/post')
     div.form-group
       label(for='Title') Title:
       input#email.form-control(type='text', placeholder='post tile' name='title')

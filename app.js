@@ -9,8 +9,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const routes = require('./routes/route');
 const app = express();
-const User = require('./objects/User');
-const Posts = require('./objects/Posts');
+const User = require('./models/User');
+const Posts = require('./models/Post');
 const port = 80;
 
 // Database connector
