@@ -6,7 +6,7 @@ head
   link(rel='stylesheet', href='/css/normalize.css')
   link(rel='stylesheet', href='/css/style.css')
   link(rel='stylesheet', href='https://web.archive.org/web/20121130181416cs_/http://fonts.staticsafe.ca/Fixedsys500c.css')
-  title Blog | #{title}
+  title #{title}
   body
     nav
       a(href='/') home
@@ -47,6 +47,15 @@ head
         |
         |
         |
+        a(href='/edit') edit
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+        |
         a(href='/logout') logout
       |
       |
@@ -59,6 +68,6 @@ head
       a(href='/about') about
     h1#headerTitle #{title}
     block content
-    block foot
-      #footer
-        p 2018
+  footer
+    block footer
+      p &copy; 2018

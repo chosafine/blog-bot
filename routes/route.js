@@ -28,77 +28,85 @@ router.get('/logout', (req, res, next) => {
 });
 
 router.get('/login', (req, res) => {
-	res.render('login', { title: 'Login' });
+	 if (req.session && req.session.userId) {
+      return res.redirect('/'); 
+    } else {
+      res.render('login', { title: 'Login' });
+    }
 });
 
-router.post('/login', (req, res, next) => {
-	
+router.post('/login', (req, res, next) => {	
 	// authenticate user
 	if (req.body.email && req.body.password) {
     User.authenticate(req.body.email, req.body.password, (error, user) => {
       if (error || !user) {
-        var err = new Error('Wrong email or password.');
-        err.status = 401;
-        return next(err);
+        const error = new Error('Wrong email or password.');
+        error.status = 401;
+        return next(error);
       }  else {
         req.session.userId = user._id;
-        return res.redirect('/user');
+        return res.redirect('/post');
       }
     });
   } else {
-    var err = new Error('Email and password are required.');
-    err.status = 401;
-    return next(err);
+    const error = new Error('Email and password are required.');
+    error.status = 401;
+    return next(error);
   }
 });
 
 router.get('/register', (req, res) => {
-	res.render('register', { title: 'Register' });
+	 if (req.session && req.session.userId) {
+     return res.redirect('/'); 
+    } else {
+  res.render('register', { title: 'Register' });
+    }
 });
 
 router.post('/register', (req, res, next) => {
-	if ( req.body.email &&
-		   req.body.password &&
-		   req.body.confirmPassword )
-		{
-			// confirm that passwords match
-			if ( req.body.password !== req.body.confirmPassword )
-				{ var err = new Error('Passwords Do Not Match.');
-				err.status = 400;
-				return next(err); }
+    
+    if ( req.body.email &&
+  		   req.body.password &&
+  		   req.body.confirmPassword )
+  		{
+  			// confirm that passwords match
+  			if ( req.body.password !== req.body.confirmPassword )
+  				{ const error = new Error('Passwords Do Not Match.');
+  				error.status = 400;
+  				return next(error); }
 
-			// create object
-      		const userData = {
-        		email: req.body.email,
-        		password: req.body.password
-      		};
+  			// create object
+        		const userData = {
+          		email: req.body.email,
+          		password: req.body.password
+        		};
 
-			// insert into mongo
-      		User.create(userData, (error, user) => {
-        	if (error) {
-         		 return next(error);
-        	} else {
-          		req.session.userId = user._id;
-              return res.redirect('/post');
-        	}
-			});
+  			// insert into mongo
+        		User.create(userData, (error, user) => {
+          	if (error) {
+           		 return next(error);
+          	} else {
+            		req.session.userId = user._id;
+                return res.redirect('/post');
+          	}
+  			});
 
-		} else {
-			var err = new Error('All Fields Required.');
-			err.status = 400;
-			return next(err);
-		}
+  		} else {
+  			const error = new Error('All Fields Required.');
+  			error.status = 400;
+  			return next(error);
+  		}
 });
 
 router.get('/post', (req, res, next) => { 
   if (req.session && req.session.userId) {
     return res.render('post', { 
-      title: 'New Post', name: User.username, user: req.session.userId 
+      title: 'New Post', user: req.session.userId 
     });
   } else {
-    const err = new Error('You must be logged in to view this page.');
-    err.status = 401;
-    return next(err);
+    const error = new Error('You must be logged in to view this page.');
+    error.status = 401;
+    return next(error);
   }
 });
 
@@ -122,10 +130,58 @@ router.post('/post', (req, res, next) => {
 			});
 
 		} else {
-			var err = new Error('All Fields Required.');
-			err.status = 400;
-			return next(err);
+			const error = new Error('All Fields Required.');
+			error.status = 400;
+			return next(error);
 		}
+});
+
+router.get('/edit', (req, res) => {
+  Posts.find({})
+      .sort({date: -1})
+      .exec( (error, posts) =>{
+        if ( error ) {
+          return next(error);
+        } else {
+              res.render('edit', { 
+                title: 'Edit Posts', user: req.session.userId, posts: posts 
+              });
+        }
+      })
+});
+
+router.post('/edit', (req, res, next) => {
+  if ( req.body.id ) {
+      Posts.update( {_id: req.body.id}, { $set: { title: req.body.title, body: req.body.post } }, ( error ) => {
+          if (error){
+            const error = new Error('There was a problem updating the post.');
+            error.status = 500;
+            return next(error);
+          } else {
+            res.redirect('/');
+          }
+      });
+  } else {
+    const error = new Error('Post ID does not match the post trying to be updated');
+    error.status = 400;
+    return next(error);
+  }
+});
+
+router.post('/delete', (req, res, next) => {
+  if ( req.body.id ) {
+        Posts.findOneAndDelete( { _id: req.body.id }, ( error ) => {
+          if ( error ) {
+              const error = new Error('There was a problem updating the post.');
+              error.status = 500;
+              return next(error);
+              } else {
+                  res.redirect('/');
+              }
+          });
+        } else {
+            res.redirect('/');
+        }
 });
 
 router.get('/about', (req, res) => {

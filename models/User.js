@@ -19,9 +19,9 @@ const UserSchema = new mongoose.Schema({
 // hash password before saving to database
 UserSchema.pre('save', function(next) {
   let user = this;
-  bcrypt.hash(user.password, 10, function(err, hash) {
-    if (err) {
-      return next(err);
+  bcrypt.hash(user.password, 10, function(error, hash) {
+    if (error) {
+      return next(error);
     }
     user.password = hash;
     next();
@@ -29,17 +29,17 @@ UserSchema.pre('save', function(next) {
 });
 
 // authenticate input
-UserSchema.statics.authenticate = function(email, password, callback) {
+UserSchema.statics.authenticate = (email, password, callback) => {
   User.findOne({ email: email })
-      .exec(function (error, user) {
+      .exec( (error, user) => {
         if (error) {
           return callback(error);
         } else if ( !user ) {
-          let err = new Error('User not found.');
-          err.status = 401;
-          return callback(err);
+          const error = new Error('User not found.');
+          error.status = 401;
+          return callback(error);
         }
-        bcrypt.compare(password, user.password , function(error, result) {
+        bcrypt.compare(password, user.password , (error, result) => {
           if (result === true) {
             return callback(null, user);
           } else {

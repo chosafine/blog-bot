@@ -15,7 +15,9 @@ const port = 80;
 
 // Database connector
 const mongoDB = 'mongodb://127.0.0.1/blogStore';
-mongoose.connect(mongoDB);
+// note: the next two lines are the way they are due to the current version of mongoose using features that are depreciated in mongodb
+mongoose.connect(mongoDB, { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
 
 //Get the default connection
 const db = mongoose.connection;
@@ -42,26 +44,24 @@ app.set('view engine', 'pug');
 
 // Define Routes
 app.use('/', routes);
-app.use('/logout', routes);
-app.use('/login', routes);
-app.use('/register', routes);
-app.use('/user', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('File Not Found');
-  err.status = 404;
-  next(err);
+  var error = new Error('File Not Found');
+  error.status = 404;
+  next(error);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
+app.use( (error, req, res, next) => {
+  res.status(error.status || 500);
   res.render('error', {
-    message: err.message,
+    user: req.session.userId,
+    message: error.message,
     error: {},
     title: 'Error'
   });
+  console.error(error);
 });
 
 app.listen(port, () => console.log(`Blog is running on port ${port}!`))

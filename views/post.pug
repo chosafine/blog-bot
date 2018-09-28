@@ -1,12 +1,12 @@
 extends layout
 
 block content
-
   form(method='POST' action='/post')
-    div.form-group
+    div.form
       label(for='Title') Title:
-      input#email.form-control(type='text', placeholder='post tile' name='title')
-    div.form-group
-      label(for='post') Blog Post:
-      input#email.form-control(type='text', placeholder='post' name='post')
-    button(type='submit') Create Post
+      input(type='text', placeholder='post title' name='title')
+    div.form
+      label Post:
+      textarea(placeholder='post body' name='post' rows='20' cols='20')
+    div.form
+      button(type='submit') Create Post
