@@ -2,9 +2,10 @@
 
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 const User = require('../models/User');
 const Posts = require('../models/Post');
+const mid = require('../midware/middleware');
+const feed = require('../midware/rss');
 
 // define routes
 router.get('/', (req, res, next) => {
@@ -22,9 +23,15 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/logout', (req, res, next) => {
-	req.session.destroy( () => {
-  });
-	return res.redirect('/');
+	if ( req.session ) {
+    req.session.destroy( (error) => {
+      if ( error ) {
+        return next(error);
+      } else {
+        return res.redirect('/');
+      }
+    });
+  }
 });
 
 router.get('/login', (req, res) => {
@@ -36,7 +43,8 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {	
-	// authenticate user
+	
+  // authenticate user
 	if (req.body.email && req.body.password) {
     User.authenticate(req.body.email, req.body.password, (error, user) => {
       if (error || !user) {
@@ -56,6 +64,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/register', (req, res) => {
+
 	 if (req.session && req.session.userId) {
      return res.redirect('/'); 
     } else {
@@ -98,20 +107,16 @@ router.post('/register', (req, res, next) => {
   		}
 });
 
-router.get('/post', (req, res, next) => { 
-  if (req.session && req.session.userId) {
-    return res.render('post', { 
+router.get('/post', mid.requireLogin, (req, res, next) => { 
+    
+    res.render('post', { 
       title: 'New Post', user: req.session.userId 
     });
-  } else {
-    const error = new Error('You must be logged in to view this page.');
-    error.status = 401;
-    return next(error);
-  }
 });
 
-router.post('/post', (req, res, next) => {
-	if ( req.body.title &&
+router.post('/post', mid.requireLogin, (req, res, next) => {
+	
+  if ( req.body.title &&
 		 req.body.post )
 		{
 			// create object with form input
@@ -136,7 +141,7 @@ router.post('/post', (req, res, next) => {
 		}
 });
 
-router.get('/edit', (req, res) => {
+router.get('/edit', mid.requireLogin, (req, res, next) => {
   Posts.find({})
       .sort({date: -1})
       .exec( (error, posts) =>{
@@ -150,7 +155,8 @@ router.get('/edit', (req, res) => {
       })
 });
 
-router.post('/edit', (req, res, next) => {
+router.post('/edit', mid.requireLogin, (req, res, next) => {
+  
   if ( req.body.id ) {
       Posts.update( {_id: req.body.id}, { $set: { title: req.body.title, body: req.body.post } }, ( error ) => {
           if (error){
@@ -168,7 +174,8 @@ router.post('/edit', (req, res, next) => {
   }
 });
 
-router.post('/delete', (req, res, next) => {
+router.post('/delete', mid.requireLogin, (req, res, next) => {
+  
   if ( req.body.id ) {
         Posts.findOneAndDelete( { _id: req.body.id }, ( error ) => {
           if ( error ) {
@@ -187,5 +194,28 @@ router.post('/delete', (req, res, next) => {
 router.get('/about', (req, res) => {
   res.render('about', { title: 'About', user: req.session.userId });
 });
+
+router.get('/rss', feed.generateFeed, (req, res, next) => {
+      
+      // send rss feed to user
+      const options = {
+      root: __dirname + '/rss/',
+      dotfiles: 'deny',
+      headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+      }
+    };
+
+    res.sendFile('feed.xml', ( error ) => {
+    if ( error ) {
+      next( error );
+    } else {
+      console.log('Sent: RSS Feed');
+    }
+  });
+  next();
+});
+
 
 module.exports = router;

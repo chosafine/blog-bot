@@ -29,6 +29,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// create session
 app.use(session({
   secret: 'blog test',
   resave: true,
@@ -39,8 +40,9 @@ app.use(session({
 }));
 
 // Setup HTML renderer
-app.use(express.static('public'))
+app.use(express.static('public'));
 app.set('view engine', 'pug');
+
 
 // Define Routes
 app.use('/', routes);
