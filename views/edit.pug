@@ -1,5 +1,5 @@
 extends layout
-	
+
 block content
 	ul
 		each post in posts
@@ -10,7 +10,7 @@ block content
 				div.form
 					label Post:
 					textarea(name='post' rows='20' cols='20') #{post.body}
-					input(type="hidden" name="id" value=post._id) 
+					input(type="hidden" name="id" value=post._id)
 				div.form
 					button(type='submit') Submit
 			form(method='POST' action='/delete')

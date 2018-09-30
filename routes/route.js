@@ -2,20 +2,22 @@
 
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 const User = require('../models/User');
 const Posts = require('../models/Post');
 const mid = require('../midware/middleware');
 const feed = require('../midware/rss');
 
 // define routes
+
 router.get('/', (req, res, next) => {
     Posts.find({})
       .sort({date: -1})
       .exec( (error, posts) =>{
-        if ( error ) {
+        if (error) {
           return next(error);
         } else {
-            res.render('index', { 
+            res.render('index', {
               title: 'Blog', user: req.session.userId, posts: posts
             });
         }
@@ -36,14 +38,14 @@ router.get('/logout', (req, res, next) => {
 
 router.get('/login', (req, res) => {
 	 if (req.session && req.session.userId) {
-      return res.redirect('/'); 
+      return res.redirect('/');
     } else {
       res.render('login', { title: 'Login' });
     }
 });
 
-router.post('/login', (req, res, next) => {	
-	
+router.post('/login', (req, res, next) => {
+
   // authenticate user
 	if (req.body.email && req.body.password) {
     User.authenticate(req.body.email, req.body.password, (error, user) => {
@@ -66,14 +68,14 @@ router.post('/login', (req, res, next) => {
 router.get('/register', (req, res) => {
 
 	 if (req.session && req.session.userId) {
-     return res.redirect('/'); 
+     return res.redirect('/');
     } else {
   res.render('register', { title: 'Register' });
     }
 });
 
 router.post('/register', (req, res, next) => {
-    
+
     if ( req.body.email &&
   		   req.body.password &&
   		   req.body.confirmPassword )
@@ -107,15 +109,15 @@ router.post('/register', (req, res, next) => {
   		}
 });
 
-router.get('/post', mid.requireLogin, (req, res, next) => { 
-    
-    res.render('post', { 
-      title: 'New Post', user: req.session.userId 
+router.get('/post', mid.requireLogin, (req, res) => {
+
+    res.render('post', {
+      title: 'New Post', user: req.session.userId
     });
 });
 
 router.post('/post', mid.requireLogin, (req, res, next) => {
-	
+
   if ( req.body.title &&
 		 req.body.post )
 		{
@@ -126,7 +128,7 @@ router.post('/post', mid.requireLogin, (req, res, next) => {
       		};
 
 			// insert post
-      		Posts.create(blogPost, (error, user) => {
+      		Posts.create(blogPost, (error) => {
         	if (error) {
          		 return next(error);
         	} else {
@@ -145,18 +147,18 @@ router.get('/edit', mid.requireLogin, (req, res, next) => {
   Posts.find({})
       .sort({date: -1})
       .exec( (error, posts) =>{
-        if ( error ) {
+        if (error) {
           return next(error);
         } else {
-              res.render('edit', { 
-                title: 'Edit Posts', user: req.session.userId, posts: posts 
+              res.render('edit', {
+                title: 'Edit Posts', user: req.session.userId, posts: posts
               });
         }
       })
 });
 
 router.post('/edit', mid.requireLogin, (req, res, next) => {
-  
+
   if ( req.body.id ) {
       Posts.update( {_id: req.body.id}, { $set: { title: req.body.title, body: req.body.post } }, ( error ) => {
           if (error){
@@ -175,10 +177,10 @@ router.post('/edit', mid.requireLogin, (req, res, next) => {
 });
 
 router.post('/delete', mid.requireLogin, (req, res, next) => {
-  
+
   if ( req.body.id ) {
         Posts.findOneAndDelete( { _id: req.body.id }, ( error ) => {
-          if ( error ) {
+          if (error) {
               const error = new Error('There was a problem updating the post.');
               error.status = 500;
               return next(error);
@@ -196,25 +198,7 @@ router.get('/about', (req, res) => {
 });
 
 router.get('/rss', feed.generateFeed, (req, res, next) => {
-      
-      // send rss feed to user
-      const options = {
-      root: __dirname + '/rss/',
-      dotfiles: 'deny',
-      headers: {
-          'x-timestamp': Date.now(),
-          'x-sent': true
-      }
-    };
-
-    res.sendFile('feed.xml', ( error ) => {
-    if ( error ) {
-      next( error );
-    } else {
-      console.log('Sent: RSS Feed');
-    }
-  });
-  next();
+  res.sendFile('feed.xml', { root: path.join(__dirname, '../public/rss/') });
 });
 
 

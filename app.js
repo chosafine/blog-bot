@@ -9,8 +9,6 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const routes = require('./routes/route');
 const app = express();
-const User = require('./models/User');
-const Posts = require('./models/Post');
 const port = 80;
 
 // Database connector
@@ -48,8 +46,8 @@ app.set('view engine', 'pug');
 app.use('/', routes);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var error = new Error('File Not Found');
+app.use( (req, res, next) => {
+  const error = new Error('File Not Found');
   error.status = 404;
   next(error);
 });
@@ -63,7 +61,6 @@ app.use( (error, req, res, next) => {
     error: {},
     title: 'Error'
   });
-  console.error(error);
 });
 
-app.listen(port, () => console.log(`Blog is running on port ${port}!`))
+app.listen(port, () => console.log(`Blog is running on port ${port}!`));
