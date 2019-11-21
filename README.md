@@ -1,4 +1,10 @@
-# blog-bot
-A Blogging site written with node, express, and pug.
+# Blog-Bot
+A Blogging Engine written with node, express, and pug.
 
-Currently in deep development, but the plan is to have a basic text blogging system that interops with activitypub.
+## Current Features:
+- User Creation
+- Post Generation
+- RSS Feed Generation
+
+### Installation Instruction:
+MongoDB is required, the rest of the dependancies are standard Node libraries. As of right now a manual creation of a DB is required.
