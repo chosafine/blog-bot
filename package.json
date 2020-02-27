@@ -9,13 +9,13 @@
   "author": "chosafine",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^3.0.1",
-    "body-parser": "^1.18.3",
-    "connect-mongo": "^2.0.1",
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "mongoose": "^5.2.17",
-    "pug": "^2.0.3",
+    "bcrypt": "^3.0.8",
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^3.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.9.2",
+    "pug": "^2.0.4",
     "rss": "^1.2.2"
   },
   "devDependencies": {
