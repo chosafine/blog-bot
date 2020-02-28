@@ -1,22 +1,22 @@
 "use strict";
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Define the Post Scheme:
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-    title:  {
+  title: {
     type: String,
     required: true,
     trim: true
   },
-    body:   {
+  body: {
     type: String,
     required: true
-    },
-    date: { type: Date, default: Date.now },
-  });
+  },
+  date: { type: Date, default: Date.now }
+});
 
-const Posts = mongoose.model('Post', postSchema);
+const Posts = mongoose.model("Post", postSchema);
 module.exports = Posts;

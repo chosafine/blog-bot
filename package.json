@@ -1,12 +1,18 @@
 {
-  "name": "blog",
-  "version": "0.0.1",
-  "description": "A CMS, written in Node, Express, and Pug.",
+  "name": "blog-bot",
+  "version": "0.0.5",
+  "description": "A CMS, written in Node, Express, and Vue.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run serve",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
   },
-  "author": "chosafine",
+  "author": "Cristian Colocho",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^3.0.8",
@@ -14,12 +20,30 @@
     "connect-mongo": "^3.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "if-env": "^1.0.4",
     "mongoose": "^5.9.2",
     "pug": "^2.0.4",
-    "rss": "^1.2.2"
+    "rss": "^1.2.2",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^5.2.0"
-  }
+    "mocha": "^5.2.0",
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "nodemon": "^2.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chosafine/blog-bot.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/chosafine/blog-bot/issues"
+  },
+  "homepage": "https://github.com/chosafine/blog-bot#readme"
 }
