@@ -1,6 +1,5 @@
 "use strict";
 
-const express = require("express");
 const path = require("path");
 const User = require("../models/User");
 const Posts = require("../models/Post");
@@ -9,18 +8,14 @@ const feed = require("../midware/rss");
 
 // define routes
 module.exports = function(app) {
-  app.get("/", (req, res, next) => {
+  app.get("/all", (req, res, next) => {
     Posts.find({})
       .sort({ date: -1 })
       .exec((error, posts) => {
         if (error) {
           return next(error);
         } else {
-          res.render("index", {
-            title: "Blog",
-            user: req.session.userId,
-            posts: posts
-          });
+          res.json(posts);
         }
       });
   });
@@ -188,10 +183,6 @@ module.exports = function(app) {
     } else {
       res.redirect("/");
     }
-  });
-
-  app.get("/about", (req, res) => {
-    res.render("about", { title: "About", user: req.session.userId });
   });
 
   app.get("/rss", feed.generateFeed, (req, res, next) => {

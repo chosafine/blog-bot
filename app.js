@@ -32,19 +32,19 @@ if (process.env.NODE_ENV === "production") {
 app.use(
   session({
     secret: "blog test",
-    resave: true,
-    saveUninitialized: false,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 604800000,
+      httpOnly: false
+    },
     store: new MongoStore({
       mongooseConnection: db
     })
   })
 );
 
-// define routes
-require("./routes/htmlRoutes.js")(app);
-require("./routes/apiRoutes.js")(app);
-
-// catch 404 and forward to error handler
+// Setting headers to allow CORS requests so post/get request on client side works
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -54,15 +54,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// error handler
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.render("error", {
-    user: req.session.userId,
-    message: error.message,
-    error: {},
-    title: "Error"
-  });
-});
+// define routes
+require("./routes/apiRoutes.js")(app);
+require("./routes/htmlRoutes.js")(app);
 
 app.listen(PORT, () => console.log(`🌎 ==> API server now on port ${PORT}!`));
