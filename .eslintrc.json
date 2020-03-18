@@ -20,7 +20,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "vue"
     ],
     "rules": {
     }

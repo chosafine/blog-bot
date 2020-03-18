@@ -2,7 +2,7 @@
   <div class="nav">
     <h3>blog bot</h3>
     <ul>
-      <li><a href="/" target="_blank" rel="noopener">home</a></li>
+      <li><a href="/">home</a></li>
       <li><a href="/login" target="_blank" rel="noopener">login</a></li>
       <li><a href="/logout" target="_blank" rel="noopener">logout</a></li>
       <li><a href="/post" target="_blank" rel="noopener">post</a></li>
