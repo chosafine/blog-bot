@@ -1,10 +1,8 @@
 "use strict";
 
-const path = require("path");
 const User = require("../models/User");
 const Posts = require("../models/Post");
 const mid = require("../midware/middleware");
-const feed = require("../midware/rss");
 
 // define routes
 module.exports = function(app) {
@@ -183,9 +181,5 @@ module.exports = function(app) {
     } else {
       res.redirect("/");
     }
-  });
-
-  app.get("/rss", feed.generateFeed, (req, res, next) => {
-    res.sendFile("feed.xml", { root: path.join(__dirname, "../public/rss/") });
   });
 };

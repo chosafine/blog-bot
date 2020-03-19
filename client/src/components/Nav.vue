@@ -3,10 +3,10 @@
     <h3>blog bot</h3>
     <ul>
       <li><a href="/">home</a></li>
-      <li><a href="/login" target="_blank" rel="noopener">login</a></li>
-      <li><a href="/logout" target="_blank" rel="noopener">logout</a></li>
-      <li><a href="/post" target="_blank" rel="noopener">post</a></li>
-      <li><a href="/rss" target="_blank" rel="noopener">RSS</a></li>
+      <li><a href="/login">login</a></li>
+      <li><a href="/logout">logout</a></li>
+      <li><a href="/post">post</a></li>
+      <li><a href="/rss">RSS</a></li>
     </ul>
   </div>
 </template>

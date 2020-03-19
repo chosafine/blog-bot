@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="home">
     <Post v-for="(post, index) in posts" :key="index" v-bind:title="post.title" v-bind:body="post.body"/>
   </div>
 </template>
@@ -8,7 +8,7 @@
 import Post from "./Post.vue";
 
 export default {
-  name: "App",
+  name: "Home",
   components: {
     Post
   },

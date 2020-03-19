@@ -2,12 +2,16 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App.vue";
 import Home from "./components/Home.vue"
+import CreatePost from "./components/CreatePost.vue";
+import Login from "./components/Login.vue";
 
 Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const routes = [
-    {path: '/', component: Home}
+    {path: '/', component: Home},
+    {path: '/post', component: CreatePost},
+    {path: '/login', component: Login}
 ];
 
 const router = new VueRouter({
