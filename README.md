@@ -6,7 +6,7 @@ blog-bot
 ![Forks](https://img.shields.io/github/forks/chosafine/blog-bot)
 ![License](https://img.shields.io/github/license/chosafine/blog-bot)
 
-A Blogging Engine written with node, express, and pug.
+A Blogging Engine written with node, express, and vue.js.
 
 ![Screenshot]()
 
