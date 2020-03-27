@@ -1,3 +1,9 @@
+<!-- This template serves as our login handler. There is
+  a form to capture user login information and a post request
+  which is ran on submit that sends it to the server where
+  the user is validated and authenticated. Once that happens
+  it will return a user session so the client can recognize
+  the user as logged in. -->
 <template>
   <div id="login">
     <form action method="get" class="form-example">

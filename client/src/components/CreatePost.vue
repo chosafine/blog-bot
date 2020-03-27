@@ -1,3 +1,9 @@
+<!-- This template serves as our page a user will use
+  to create a post. It has a basic form with text entry
+  for the title and body and a submit button. It sends
+  a post request to the server to create the post.
+  TBA: validation so this page can only be hit when
+  a user is actually logged in. -->
 <template>
   <div id="create-post">
     <form action="" method="get" class="form-example">

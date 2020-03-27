@@ -1,3 +1,7 @@
+<!-- This template serves as our post component. It takes
+  props of a title and body (TBA: audio file for podcasts),
+  and then renders it as HTML. TBA: Add an audio player for
+  podcast posts and styling options. -->
 <template>
   <div class="article">
     <article>

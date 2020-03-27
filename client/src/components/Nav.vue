@@ -1,3 +1,8 @@
+<!-- This template serves as our navigation bar. It
+  will sit at the top of each page and provide various
+  links to different templates in the app. TBA: Condtional
+  rendering so that the logout path will only be shown
+  when a user is logged in. -->
 <template>
   <div class="nav">
     <h3>blog bot</h3>
