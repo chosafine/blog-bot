@@ -8,7 +8,7 @@ blog-bot
 
 A Blogging Engine written with node, express, and vue.js.
 
-![Screenshot]()
+![Screenshot](demo.png)
 
 ## Navigation
 
