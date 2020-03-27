@@ -18,14 +18,25 @@
 
 <script>
 export default {
-  name: "Login"
+  name: "Login",
+  methods: {
+    sendLogin() {
+      fetch("http://localhost:3001/all", {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        }
+      }, /* body */)
+        .then(response => response.json())
+    }
+  }
 };
 </script>
 
 <style>
 form {
   text-align: center;
-  color: #2c3e50;
   margin: 0 auto;
 }
 form.form-example {

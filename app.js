@@ -1,5 +1,3 @@
-"use strict";
-
 // Requirements for the app to run
 const express = require("express");
 const mongoose = require("mongoose");
@@ -58,4 +56,5 @@ app.use((req, res, next) => {
 require("./routes/apiRoutes.js")(app);
 require("./routes/htmlRoutes.js")(app);
 
+// initialize listener for server
 app.listen(PORT, () => console.log(`🌎 ==> API server now on port ${PORT}!`));

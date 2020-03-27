@@ -1,11 +1,12 @@
-"use strict";
-
 const User = require("../models/User");
 const Posts = require("../models/Post");
 const mid = require("../midware/middleware");
 
-// define routes
+// exported routes to be used in the app.js file
 module.exports = function(app) {
+
+  // This api route exists to grab all posts in the database
+  // regardless of user. Think of building the home page of a blog.
   app.get("/all", (req, res, next) => {
     Posts.find({})
       .sort({ date: -1 })
@@ -18,6 +19,7 @@ module.exports = function(app) {
       });
   });
 
+  // This route will destroy the session, therefore logging the user out.
   app.get("/logout", (req, res, next) => {
     if (req.session) {
       req.session.destroy(error => {
@@ -30,14 +32,11 @@ module.exports = function(app) {
     }
   });
 
-  app.get("/login", (req, res) => {
-    if (req.session && req.session.userId) {
-      return res.redirect("/");
-    } else {
-      res.render("login", { title: "Login" });
-    }
-  });
-
+  // This route exists to log in the user, we take a username and password sent
+  // in the body and then check the database to see if this user exists, if yes
+  // then we run it into our authenticate function in the model to authenticate
+  // if the password correct, create a session and redirect the user to their=
+  // user page.
   app.post("/login", (req, res, next) => {
     // authenticate user
     if (req.body.email && req.body.password) {
@@ -57,15 +56,12 @@ module.exports = function(app) {
       return next(error);
     }
   });
-
-  app.get("/register", (req, res) => {
-    if (req.session && req.session.userId) {
-      return res.redirect("/");
-    } else {
-      res.render("register", { title: "Register" });
-    }
-  });
-
+  
+  // This route exists to register the user, we take an email, username, and password
+  // in the body and then check the database to see if this user exists, if yes
+  // then we will send an error back to the client saying the user already exists.
+  // If not then we will hash the password and create the user, then redirect them
+  // to the user page.
   app.post("/register", (req, res, next) => {
     if (req.body.email && req.body.password && req.body.confirmPassword) {
       // confirm that passwords match
@@ -97,13 +93,8 @@ module.exports = function(app) {
     }
   });
 
-  app.get("/post", mid.requireLogin, (req, res) => {
-    res.render("post", {
-      title: "New Post",
-      user: req.session.userId
-    });
-  });
-
+  // This route exists to take the title and body sent to it and create
+  // a new post in the database
   app.post("/post", mid.requireLogin, (req, res, next) => {
     if (req.body.title && req.body.post) {
       // create object with form input
@@ -127,22 +118,9 @@ module.exports = function(app) {
     }
   });
 
-  app.get("/edit", mid.requireLogin, (req, res, next) => {
-    Posts.find({})
-      .sort({ date: -1 })
-      .exec((error, posts) => {
-        if (error) {
-          return next(error);
-        } else {
-          res.render("edit", {
-            title: "Edit Posts",
-            user: req.session.userId,
-            posts: posts
-          });
-        }
-      });
-  });
-
+  // Given the post that the user is editing on the client side, this route
+  // will take that post id, go into the database, and change the title
+  // and body of said post
   app.post("/edit", mid.requireLogin, (req, res, next) => {
     if (req.body.id) {
       Posts.update(
@@ -167,6 +145,7 @@ module.exports = function(app) {
     }
   });
 
+  // This route takes the id of a post and deletes it from the database
   app.post("/delete", mid.requireLogin, (req, res, next) => {
     if (req.body.id) {
       Posts.findOneAndDelete({ _id: req.body.id }, error => {
