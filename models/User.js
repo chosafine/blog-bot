@@ -1,9 +1,8 @@
-"use strict";
-
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-// create schema
+// This is our User model, which exists to hold user information and login information
+// bcrypt will be used for hashing and salting of the password as well.
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
