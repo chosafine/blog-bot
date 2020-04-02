@@ -3,7 +3,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const logger = require("./midware/logger")
 const PORT = process.env.PORT || 3001;
+const StatsD = require('node-dogstatsd').StatsD;
+const dogstatsd = new StatsD();
+
+// sample datadog logs and monitoring
+dogstatsd.increment('page.views')
+logger.log('info', 'Hello simple log!');
+logger.info('Hello log with metas',{color: 'blue' });
 
 // Database connector
 const mongoDB = "mongodb://127.0.0.1/blogStore";
