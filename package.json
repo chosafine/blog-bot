@@ -22,7 +22,9 @@
     "if-env": "^1.0.4",
     "mongoose": "^5.9.7",
     "rss": "^1.2.2",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "dd-trace": "",
+    "winston": ""
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
