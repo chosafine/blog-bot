@@ -7,8 +7,12 @@ const logger = require("./midware/logger")
 const PORT = process.env.PORT || 3001;
 const StatsD = require('node-dogstatsd').StatsD;
 const dogstatsd = new StatsD();
+const tracer = require('dd-trace').init()
+const span = tracer.startSpan('web.request')
 
 // sample datadog logs and monitoring
+span.setTag('my_tag', 'my_value')
+span.finish()
 dogstatsd.increment('page.views')
 logger.log('info', 'Hello simple log!');
 logger.info('Hello log with metas',{color: 'blue' });

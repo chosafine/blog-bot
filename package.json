@@ -25,7 +25,8 @@
     "node-dogstatsd": "0.0.7",
     "rss": "^1.2.2",
     "vue": "^2.6.11",
-    "winston": ""
+    "winston": "",
+    "dd-trace": ""
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
