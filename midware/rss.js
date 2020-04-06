@@ -1,5 +1,3 @@
-"use strict";
-
 const RSS = require("rss");
 const fs = require("fs");
 const Posts = require("../models/Post");
@@ -17,7 +15,7 @@ const feed = new RSS({
   copyright: "2018 user",
   language: "en",
   categories: ["Category 1", "Category 2", "Category 3"],
-  ttl: "60"
+  ttl: "60",
 });
 
 // sort posts and generate feed
@@ -34,14 +32,14 @@ function generateFeed(req, res, next) {
             title: posts[post].title,
             description: posts[post].body,
             guid: posts[post].id,
-            date: posts[post].date
+            date: posts[post].date,
           });
 
           // generate xml file
           const xml = feed.xml({ indent: true });
 
           // write feed to directory
-          fs.writeFile("./public/rss/feed.xml", xml, error => {
+          fs.writeFile("./public/rss/feed.xml", xml, (error) => {
             if (error) {
               return console.error(error);
             } else {

@@ -3,19 +3,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-const logger = require("./midware/logger")
+const tracer = require("dd-trace").init();
+const logger = require("./midware/logger");
 const PORT = process.env.PORT || 3001;
-const StatsD = require('node-dogstatsd').StatsD;
+const StatsD = require("node-dogstatsd").StatsD;
 const dogstatsd = new StatsD();
-const tracer = require('dd-trace').init()
-const span = tracer.startSpan('web.request')
+const span = tracer.startSpan("web.request");
 
 // sample datadog logs and monitoring
-span.setTag('my_tag', 'my_value')
-span.finish()
-dogstatsd.increment('page.views')
-logger.log('info', 'Hello simple log!');
-logger.info('Hello log with metas',{color: 'blue' });
+span.setTag("my_tag", "my_value");
+dogstatsd.increment("page.views");
+logger.log("info", "Hello simple log!");
+logger.info("Hello log with metas", { color: "blue" });
 
 // Database connector
 const mongoDB = "mongodb://127.0.0.1/blogStore";
@@ -46,11 +45,11 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 604800000,
-      httpOnly: false
+      httpOnly: false,
     },
     store: new MongoStore({
-      mongooseConnection: db
-    })
+      mongooseConnection: db,
+    }),
   })
 );
 

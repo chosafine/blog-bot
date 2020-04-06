@@ -1,6 +1,6 @@
 const path = require("path");
 
-module.exports = function(app) {
+module.exports = function (app) {
   // Send every other request to the vue.js app
   // essentially if anything but an API route is hit we automatically send
   // the user to the client app

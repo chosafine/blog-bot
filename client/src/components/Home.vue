@@ -6,7 +6,12 @@
   app and helping to manage the state of the app. -->
 <template>
   <div id="home">
-    <Post v-for="(post, index) in posts" :key="index" v-bind:title="post.title" v-bind:body="post.body"/>
+    <Post
+      v-for="(post, index) in posts"
+      :key="index"
+      v-bind:title="post.title"
+      v-bind:body="post.body"
+    />
   </div>
 </template>
 
@@ -18,7 +23,7 @@ export default {
   components: {
     Post
   },
-   data() {
+  data() {
     return {
       posts: []
     };
@@ -30,8 +35,8 @@ export default {
         .then(data => (this.posts = data));
     }
   },
-   beforeMount(){
+  beforeMount() {
     this.getPosts();
- },
+  }
 };
 </script>

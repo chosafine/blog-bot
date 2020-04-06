@@ -8,18 +8,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 // hash password before saving to database
-UserSchema.pre("save", function(next) {
+UserSchema.pre("save", function (next) {
   let user = this;
-  bcrypt.hash(user.password, 10, function(error, hash) {
+  bcrypt.hash(user.password, 10, function (error, hash) {
     if (error) {
       return next(error);
     }

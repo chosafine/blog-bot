@@ -6,7 +6,7 @@
 <template>
   <div id="app">
     <Nav />
-    <hr>
+    <hr />
     <router-view></router-view>
   </div>
 </template>
@@ -19,9 +19,8 @@ export default {
   components: {
     Nav
   },
-  data () {
-    return {
-    }
+  data() {
+    return {};
   }
 };
 </script>

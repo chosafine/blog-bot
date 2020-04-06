@@ -1,5 +1,3 @@
-"use-strict";
-
 // give a user access to a page only if they're logged in
 function requireLogin(req, res, next) {
   if (req.session && req.session.userId) {

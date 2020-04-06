@@ -8,13 +8,13 @@ const postSchema = new Schema({
   title: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   body: {
     type: String,
-    required: true
+    required: true,
   },
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
 });
 
 const Posts = mongoose.model("Post", postSchema);

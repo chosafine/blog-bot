@@ -1,8 +1,8 @@
-const { createLogger, format, transports } = require('winston');
-const appRoot = './';
+const { createLogger, format, transports } = require("winston");
+const appRoot = "./";
 
 const logger = createLogger({
-  level: 'info',
+  level: "info",
   exitOnError: false,
   format: format.json(),
   transports: [

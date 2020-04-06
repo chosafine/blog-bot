@@ -3,8 +3,7 @@ const Posts = require("../models/Post");
 const mid = require("../midware/middleware");
 
 // exported routes to be used in the app.js file
-module.exports = function(app) {
-
+module.exports = function (app) {
   // This api route exists to grab all posts in the database
   // regardless of user. Think of building the home page of a blog.
   app.get("/all", (req, res, next) => {
@@ -22,7 +21,7 @@ module.exports = function(app) {
   // This route will destroy the session, therefore logging the user out.
   app.get("/logout", (req, res, next) => {
     if (req.session) {
-      req.session.destroy(error => {
+      req.session.destroy((error) => {
         if (error) {
           return next(error);
         } else {
@@ -56,7 +55,7 @@ module.exports = function(app) {
       return next(error);
     }
   });
-  
+
   // This route exists to register the user, we take an email, username, and password
   // in the body and then check the database to see if this user exists, if yes
   // then we will send an error back to the client saying the user already exists.
@@ -74,7 +73,7 @@ module.exports = function(app) {
       // create object
       const userData = {
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
       };
 
       // insert into mongo
@@ -100,11 +99,11 @@ module.exports = function(app) {
       // create object with form input
       const blogPost = {
         title: req.body.title,
-        body: req.body.post
+        body: req.body.post,
       };
 
       // insert post
-      Posts.create(blogPost, error => {
+      Posts.create(blogPost, (error) => {
         if (error) {
           return next(error);
         } else {
@@ -126,7 +125,7 @@ module.exports = function(app) {
       Posts.update(
         { _id: req.body.id },
         { $set: { title: req.body.title, body: req.body.post } },
-        error => {
+        (error) => {
           if (error) {
             const error = new Error("There was a problem updating the post.");
             error.status = 500;
@@ -148,7 +147,7 @@ module.exports = function(app) {
   // This route takes the id of a post and deletes it from the database
   app.post("/delete", mid.requireLogin, (req, res, next) => {
     if (req.body.id) {
-      Posts.findOneAndDelete({ _id: req.body.id }, error => {
+      Posts.findOneAndDelete({ _id: req.body.id }, (error) => {
         if (error) {
           const error = new Error("There was a problem updating the post.");
           error.status = 500;
