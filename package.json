@@ -17,16 +17,12 @@
   "dependencies": {
     "bcrypt": "^4.0.1",
     "connect-mongo": "^3.2.0",
-    "dd-trace": "",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "if-env": "^1.0.4",
     "mongoose": "^5.9.7",
-    "node-dogstatsd": "0.0.7",
     "rss": "^1.2.2",
-    "vue": "^2.6.11",
-    "winston": "",
-    "dd-trace": ""
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
